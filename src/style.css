@@ -1,12 +1,11 @@
 *{
     margin: 0;
-    background-color: #00E6F6; 
 }
 
-.new-game-btn,
-.new-game-btn:after {
-    margin-left: 45% ;
-    margin-top: 10%;
+.start-game-btn,
+.start-game-btn:after {
+  margin-left: 43% ;
+  margin-top: 20px;
   width: 150px;
   height: 76px;
   line-height: 78px;
@@ -25,7 +24,7 @@
   touch-action: manipulation;
 }
 
-.new-game-btn:after {
+.start-game-btn:after {
   --slice-0: inset(50% 50% 50% 50%);
   --slice-1: inset(80% -6px 0 0);
   --slice-2: inset(50% -6px 30% 0);
@@ -45,7 +44,7 @@
   clip-path: var(--slice-0);
 }
 
-.new-game-btn:hover:after {
+.start-game-btn:hover:after {
   animation: 1s glitch;
   animation-timing-function: steps(2, end);
 }
@@ -98,8 +97,8 @@
 }
 
 @media (min-width: 768px) {
-  .new-game-btn,
-  .new-game-btn:after {
+  .start-game-btn,
+  .start-game-btn:after {
     width: 200px;
     height: 86px;
     line-height: 88px;
@@ -108,7 +107,7 @@
 .playing-div{
   float: left;
   width: 50%;
-  background-color: #00E6F6;
+  
 }
 .dealers-hand{
   display: flex;
@@ -119,8 +118,8 @@
 
 }
 .dealers-cards{
-  padding-left: 240px;
-  padding-top: 50px;
+  padding-left: 243px;
+  padding-top: 5px;
   padding-bottom: 50px;
   font-family: 'DynaPuff', cursive;
   font-size: 23px;
@@ -147,10 +146,18 @@
   padding-left: 240px;
   font-family: 'DynaPuff', cursive;
 }
+.hidden-card{
+  padding-left: 240px;
+  padding-top: 30px;
+  font-family: 'DynaPuff', cursive;
+  font-size: 23px;
+  height: 220px;
+  padding-bottom: 0px;
+}
 .buttons{
     position: absolute;
     margin-top: 100px;
-    margin-left: 45%;
+    margin-left: 42%;
 }
 .hit-btn {
   background-color:#FF013C;
@@ -189,13 +196,41 @@
 .stay-btn:hover {
   transform: perspective(1px) scale3d(1.044, 1.044, 1) translateZ(0) !important;
 }
-.result-div{
+.new-game-btn{
+  background-color: #000303;
+  border-radius: 40px;
+  box-sizing: border-box;
+  color: whitesmoke;
+  display: block;
+  height: 40px;
+  font-size: 1em;
+  position: relative;
+  text-decoration: none;
+  width: 7em;
+  z-index: 2;
+ 
+}
+.new-game-btn:hover{
+  transform: perspective(1px) scale3d(1.044, 1.044, 1) translateZ(0) !important;
+}
+.new-btn-div{
+  margin-left: 87%;
+}
+.result-dark {
   position: absolute;
-  margin-top: 380px;
-  margin-left: 46%;
+  margin-top: 20%;
+  margin-left: 43%;
   font-family: 'DynaPuff', cursive;
   font-size: 23px;
   background-color: #00E6F6;
+}
+.result-light{
+  position: absolute;
+  margin-top: 20%;
+  margin-left: 43%;
+  font-family: 'DynaPuff', cursive;
+  font-size: 23px;
+  background-color: black;
 }
 .cards{
   height: 200px;
@@ -206,6 +241,12 @@
 .dark{
   background-color: #000000;
   color: white;
+  /* height: 100%; */
+}
+.light{
+  background-color: #00E6F6;
+  height: 100%;  
+  color: black;
 }
 .nav-bar{
   display: flex;

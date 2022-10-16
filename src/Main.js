@@ -2,12 +2,16 @@ import React from "react";
 import { useState, useEffect } from 'react';
 import DECKOFCARDS from "./constants";
 import Card from "./card";
-import "./style.css"
+import "./style.css";
+import back from "./assets/Back_Blue.png";
+import HiddenCard from "./HiddenCard";
+
 
 export default function Main(props) {
     const [playerHand, setPlayerHand] = useState([])
     const [dealerHand, setDealerHand] = useState([])
     const [playerSum, setPlayerSum] = useState(0)
+    
     const [dealerSum, setDealerSum] = useState(0)
 
     const [gameStart, setGameStart] = useState(false)
@@ -16,25 +20,24 @@ export default function Main(props) {
     const [gameOn, setGameOn] = useState(false)
     const [playerWon, setPlayerWon] = useState(false)
     const [gameDraw, setGamedraw] = useState(false)
-    const [showResult, setShowResult] = useState(true)
+    const [showResult, setShowResult] = useState(false)
     
+    const [cardShow, setCardShow] = useState([])
 
     const [playerTurn, setPlayerTurn] = useState("hit")
+    const [newgame, setNewGame]= useState(false)
 
-
-    //const playerHandArray = valueCard
-    //const dealerHandArray = dealerValue
 
     useEffect(() => {
-        setDealerSum(sumOfCards(dealerHand))
-        setPlayerSum(sumOfCards(playerHand))
+        setDealerSum(sumOfDealerCards(dealerHand))
+        setPlayerSum(sumOfPlayercards(playerHand))
     }, [dealerHand, playerHand])
 
     useEffect(() => {
         checkBust(playerSum)
         checkBust(dealerSum)
         checkWin(dealerSum, playerSum)
-    }, [playerSum])
+    }, [playerSum, dealerSum])
 
     useEffect(() => {
         // stand after 17
@@ -50,10 +53,6 @@ export default function Main(props) {
                 setPlayerLost(true)
                 setGameOn(false)    
                 setGamedraw(false)
-                setTimeout(function () {
-                    window.location.reload(false);
-                }, 4000)
-                
             }
             else if(dealerSum<21 && playerSum<21) 
             {
@@ -64,27 +63,18 @@ export default function Main(props) {
                     setPlayerLost(false)
                     setGameOn(false)    
                     setGamedraw(false)
-                    setTimeout(function () {
-                        window.location.reload(false);
-                    }, 4000)
                 }
                 else if(playerHand < dealerHand){
                     setPlayerWon(false)
                     setPlayerLost(true)
                     setGameOn(false)    
                     setGamedraw(false)
-                    setTimeout(function () {
-                        window.location.reload(false);
-                    }, 4000)
                 }
                 else if(dealerHand===playerHand){
                     setPlayerWon(false)
                     setPlayerLost(false)
                     setGameOn(false)    
                     setGamedraw(true)
-                    setTimeout(function () {
-                        window.location.reload(false);
-                    }, 4000)
                 }
             }
             else if (dealerSum>21){
@@ -92,29 +82,11 @@ export default function Main(props) {
                 setPlayerLost(false)
                 setGameOn(false)    
                 setGamedraw(false)
-                setTimeout(function () {
-                    window.location.reload(false);
-                }, 4000)
             }
         }
     }, [dealerSum])
 
-    useEffect(() => {
-        // deal a card to player, dealer, player, dealer, show 1 hide 1 for dealer. show both for 
-        setTimeout(function () {
-            dealDelaerHand();
-        }, 2000)
-        setTimeout(function () {
-            dealPlayerHand();
-        }, 2500)
-        setTimeout(function () {
-            dealDelaerHand();
-        }, 3000)
-        setTimeout(function () {
-            dealPlayerHand();
-        }, 3500)
-
-    }, [])
+    
 
     function checkWin(dealerSum, playerSum) {
         if(dealerSum>21){
@@ -122,20 +94,13 @@ export default function Main(props) {
             setPlayerLost(false)
             setGameOn(false)    
             setGamedraw(false)
-            setTimeout(function () {
-                window.location.reload(false);
-            }, 4000)
         }
         if (dealerSum===21){
             console.log("dealer wins")
             setPlayerWon(false)
             setPlayerLost(true)
             setGameOn(false)
-            setGamedraw(false)
-
-            setTimeout(function () {
-                window.location.reload(false);
-            }, 4000)       
+            setGamedraw(false)   
         }
         if (playerSum===21){
             console.log("player wins")
@@ -143,23 +108,13 @@ export default function Main(props) {
             setPlayerLost(false)
             setGameOn(false)
             setGamedraw(false)
-            
-            setTimeout(function () {
-            
-                window.location.reload(false);
-            }, 4000)        
         }
         if(playerSum>21){
             console.log("you lost")
             setPlayerWon(false)
             setPlayerLost(true)
             setGameOn(false)
-            setGamedraw(false)  
-
-            setTimeout(function () {
-                
-                window.location.reload(false);
-            }, 4000)       
+            setGamedraw(false)      
          }
         if(playerSum<21){
             setPlayerWon(false)
@@ -169,32 +124,35 @@ export default function Main(props) {
         }
     }
 
-    function sumOfCards(cardsArray) {
-        let s = 0
+    function sumOfDealerCards(cardsArray) {
+        let x = Math.floor(Math.random() * 10)   
         for (var i = 0; i < cardsArray.length; i++) {
-            s += cardsArray[i].value
+            x += cardsArray[i].value
         }
-        return s
+        return x
+    }
+    function sumOfPlayercards(cardsArray){
+        let y=0
+        for(var j=0; j<cardsArray.length; j++){
+            y+=cardsArray[j].value
+        }
+        return y
     }
 
     function dealDelaerHand() {
         const random1 = Math.floor(Math.random() * DECKOFCARDS.length)
-        checkWin(dealerHand, playerHand)    
+        checkWin(dealerSum, playerSum)    
         setDealerHand((prev) => {
             return [...prev, DECKOFCARDS[random1]]
         })
-        
-        
-        
     }
 
     function dealPlayerHand() {
         const random = Math.floor(Math.random() * DECKOFCARDS.length)
-        
-            setPlayerHand((prev) => {
-                return [...prev, DECKOFCARDS[random]]
-            })
-            checkWin(dealerHand, playerHand)
+        setPlayerHand((prev) => {
+            return [...prev, DECKOFCARDS[random]]
+        })
+        checkWin(dealerHand, playerHand)
     }
 
     function checkBust (sumOfPlayer, dealerSum){
@@ -203,18 +161,14 @@ export default function Main(props) {
         setPlayerLost(true)
         setGameOn(false)
         setGamedraw(false)
-        setTimeout(function () {
-            window.location.reload(false);
-        }, 4000)
+        
     }
     if(dealerSum>21){
         setPlayerWon(true)
         setPlayerLost(false)
         setGameOn(false)
         setGamedraw(false)
-        setTimeout(function () {
-            window.location.reload(false);
-        }, 4000)
+        
     }
     if (sumOfPlayer===21) {
         console.log("you won!")
@@ -222,9 +176,7 @@ export default function Main(props) {
         setPlayerLost(false)
         setGameOn(false)
         setGamedraw(false)
-        setTimeout(function () {
-            window.location.reload(false);
-        }, 4000)
+        
         
     } else if (sumOfPlayer>21){
             console.log("bust")
@@ -232,9 +184,7 @@ export default function Main(props) {
             setPlayerLost(true)
             setGameOn(false)
             setGamedraw(false)
-            setTimeout(function () {
-                window.location.reload(false);
-            }, 4000)
+
         } else {
             return false
         }
@@ -243,19 +193,43 @@ export default function Main(props) {
     function startgame() {
         setGameStart(true)
         setHidestartbtn(false)
+        setShowResult(true)
+        setNewGame(true)
+        setCardShow(() => {
+            // deal a card to player, dealer, player, dealer, show 1 hide 1 for dealer. show both for 
+            // setTimeout(function () {
+            //     dealDelaerHand();
+            // }, 2000)
+            setTimeout(function () {
+                dealPlayerHand();
+            }, 500)
+            setTimeout(function () {
+                dealDelaerHand();
+            }, 2000)
+            setTimeout(function () {
+                dealPlayerHand();
+            }, 2500)
+    
+        })
+    }
+    function newGame(){
+        window.location.reload(false);
     }
 
     return (
-        <main className={props.darkMode ? "dark":""}>
-            {hidestartbtn && <button onClick={startgame} className="new-game-btn">New Game</button>}
+        <main className={props.darkMode ? "light":"dark"}>
+            {hidestartbtn && <button onClick={startgame} className="start-game-btn">Start Game</button>}
             {gameStart && 
             <div>
                 <div>
                     <div  className="playing-div">
                         <div className="dealers-hand">Dealer's Hand </div>
+                         <HiddenCard className="hidden-card" img={back}/>
                         <div className="dealers-cards">{dealerHand.map(elem=>{
                             return (
-                            <Card  img={elem.img}/>
+                            <div>
+                            <Card img={elem.img}/>
+                            </div>
                             )
                         })}</div>
                         <div className="dealers-sum">dealer Card sum - {dealerSum}</div>
@@ -281,14 +255,19 @@ export default function Main(props) {
                             dealDelaerHand()
                         }}>Stay</button>
                 </div>
-                </div>
-            }
-                { showResult && <div className="result-div">
+                { showResult && <div className={props.darkMode ? "result-dark":"result-light"}>
                     {gameDraw && <div>Draw. Let's call a TRUCE</div>}
                     {playerLost && <div>Dealer wins</div>}
                     {gameOn && <div> Hit or Stay </div>}
                     {playerWon && <div>BlackJack!! You Won 🥳 </div>}
                 </div>}
+                </div>
+            }
+            <div className="new-btn-div">
+            { newgame && <button onClick={newGame} className="new-game-btn" >New Game</button>}
+            </div>
+            
+                
         </main>
     )
 }

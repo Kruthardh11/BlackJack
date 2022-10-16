@@ -6,6 +6,5 @@ export default function Card(props){
         {/* <img> {props.img}</img> */}
         <img  className="cards" src={props.img} /> 
         </div>
-        
     );
 }
