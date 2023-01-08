@@ -21,6 +21,7 @@ export default function Main(props) {
     const [playerWon, setPlayerWon] = useState(false)
     const [gameDraw, setGamedraw] = useState(false)
     const [showResult, setShowResult] = useState(false)
+    const [HideButton, setHideButton] = useState(false)
     
     const [cardShow, setCardShow] = useState([])
 
@@ -41,7 +42,7 @@ export default function Main(props) {
 
     useEffect(() => {
         // stand after 17
-        if (playerTurn=="stay"){
+        if (playerTurn==="stay"){
             if (dealerSum<17){ 
                 setTimeout(function () {
                     dealDelaerHand();
@@ -53,6 +54,7 @@ export default function Main(props) {
                 setPlayerLost(true)
                 setGameOn(false)    
                 setGamedraw(false)
+                setHideButton(false)
             }
             else if(dealerSum<21 && playerSum<21) 
             {
@@ -63,18 +65,21 @@ export default function Main(props) {
                     setPlayerLost(false)
                     setGameOn(false)    
                     setGamedraw(false)
+                    setHideButton(false)
                 }
                 else if(playerHand < dealerHand){
                     setPlayerWon(false)
                     setPlayerLost(true)
                     setGameOn(false)    
                     setGamedraw(false)
+                    setHideButton(false)
                 }
                 else if(dealerHand===playerHand){
                     setPlayerWon(false)
                     setPlayerLost(false)
                     setGameOn(false)    
                     setGamedraw(true)
+                    setHideButton(false)
                 }
             }
             else if (dealerSum>21){
@@ -82,6 +87,7 @@ export default function Main(props) {
                 setPlayerLost(false)
                 setGameOn(false)    
                 setGamedraw(false)
+                setHideButton(false)
             }
         }
     }, [dealerSum])
@@ -94,6 +100,7 @@ export default function Main(props) {
             setPlayerLost(false)
             setGameOn(false)    
             setGamedraw(false)
+            setHideButton(false)
         }
         if (dealerSum===21){
             console.log("dealer wins")
@@ -101,6 +108,7 @@ export default function Main(props) {
             setPlayerLost(true)
             setGameOn(false)
             setGamedraw(false)   
+            setHideButton(false)
         }
         if (playerSum===21){
             console.log("player wins")
@@ -108,13 +116,15 @@ export default function Main(props) {
             setPlayerLost(false)
             setGameOn(false)
             setGamedraw(false)
+            setHideButton(false)
         }
         if(playerSum>21){
             console.log("you lost")
             setPlayerWon(false)
             setPlayerLost(true)
             setGameOn(false)
-            setGamedraw(false)      
+            setGamedraw(false)    
+            setHideButton(false)  
          }
         if(playerSum<21){
             setPlayerWon(false)
@@ -162,12 +172,14 @@ export default function Main(props) {
         setGameOn(false)
         setGamedraw(false)
         
+        
     }
     if(dealerSum>21){
         setPlayerWon(true)
         setPlayerLost(false)
         setGameOn(false)
         setGamedraw(false)
+        
         
     }
     if (sumOfPlayer===21) {
@@ -176,6 +188,7 @@ export default function Main(props) {
         setPlayerLost(false)
         setGameOn(false)
         setGamedraw(false)
+       
         
         
     } else if (sumOfPlayer>21){
@@ -184,6 +197,7 @@ export default function Main(props) {
             setPlayerLost(true)
             setGameOn(false)
             setGamedraw(false)
+          
 
         } else {
             return false
@@ -195,6 +209,7 @@ export default function Main(props) {
         setHidestartbtn(false)
         setShowResult(true)
         setNewGame(true)
+        setHideButton(true)
         setCardShow(() => {
             // deal a card to player, dealer, player, dealer, show 1 hide 1 for dealer. show both for 
             // setTimeout(function () {
@@ -217,8 +232,8 @@ export default function Main(props) {
     }
 
     return (
-        <main className={props.darkMode ? "light":"dark"}>
-            {hidestartbtn && <button onClick={startgame} className="start-game-btn">Start Game</button>}
+        <main className={props.darkMode ? "dark":"light"}>
+            {hidestartbtn && <button onClick={startgame} className="start-game-btn">Start</button>}
             {gameStart && 
             <div>
                 <div>
@@ -232,10 +247,9 @@ export default function Main(props) {
                             </div>
                             )
                         })}</div>
-                        <div className="dealers-sum">dealer Card sum - {dealerSum}</div>
-                    </div>
-
-                    <div className="playing-div">
+                        </div>
+                        
+                        <div className="playing-div">
                         <div className="players-hand">Player's Hand</div>
                         <div className="players-cards">{playerHand.map(elem=>{
                             return(
@@ -245,7 +259,8 @@ export default function Main(props) {
                         <div className="players-sum"> player card sum -  {playerSum}</div>
                     </div>
                 </div>
-                <div className="buttons">
+                {HideButton &&
+                    <div className="buttons">
                         <button className="hit-btn" onClick={()=>{
                                 dealPlayerHand()
                             }}>Hit</button>
@@ -254,18 +269,30 @@ export default function Main(props) {
                             setPlayerTurn("stay")       
                             dealDelaerHand()
                         }}>Stay</button>
-                </div>
+                    </div>
+                }
                 { showResult && <div className={props.darkMode ? "result-dark":"result-light"}>
                     {gameDraw && <div>Draw. Let's call a TRUCE</div>}
-                    {playerLost && <div>Dealer wins</div>}
-                    {gameOn && <div> Hit or Stay </div>}
-                    {playerWon && <div>BlackJack!! You Won 🥳 </div>}
+                    {playerLost && <div>
+                        Dealer wins
+                        <div className="dealers-sum">dealer Card sum - {dealerSum}</div>
+                        <button onClick={newGame} className="new-game-btn">New Game</button>
+                        </div>}
+                    {gameOn && 
+                        <div>
+                         Hit or Stay 
+                        </div>}
+                    {playerWon && <div>
+                        BlackJack!! You Won 🥳 
+                        <div className="dealers-sum">dealer Card sum - {dealerSum}</div>
+                        <button onClick={newGame} className="new-game-btn">New Game</button>
+                        </div>}
                 </div>}
                 </div>
             }
-            <div className="new-btn-div">
+            {/* <div className="new-btn-div">
             { newgame && <button onClick={newGame} className="new-game-btn" >New Game</button>}
-            </div>
+            </div> */}
             
                 
         </main>
