@@ -1,16 +1,17 @@
 *{
     margin: 0;
+    font-size: 2px;
 }
 
 .start-game-btn,
 .start-game-btn:after {
   margin-left: 43% ;
-  margin-top: 20px;
-  width: 150px;
-  height: 76px;
-  line-height: 78px;
-  font-size: 20px;
-  background-color: #00E6F6;
+  /* margin-top: 50%; */
+  width: 150vw;
+  height: 76vh;
+  line-height: 78vh;
+  font-size: 20vw;
+  background-color: black;
   font-family: 'Bebas Neue', sans-serif;
   background: linear-gradient(45deg, transparent 5%, #FF013C 5%);
   border: 0;
@@ -125,7 +126,7 @@
   font-size: 23px;
 }
 .dealers-sum{
-  padding-left: 240px;
+ 
   font-family: 'DynaPuff', cursive;
 }
 .players-hand{
@@ -216,7 +217,7 @@
 .new-btn-div{
   margin-left: 87%;
 }
-.result-dark {
+.result-light {
   position: absolute;
   margin-top: 20%;
   margin-left: 43%;
@@ -224,7 +225,7 @@
   font-size: 23px;
   background-color: #00E6F6;
 }
-.result-light{
+.result-dark{
   position: absolute;
   margin-top: 20%;
   margin-left: 43%;
@@ -250,8 +251,8 @@
 }
 .nav-bar{
   display: flex;
-  padding: 30px;
-  padding-left: 40%;
+  padding: 3px;
+  padding-left:0 40%;
   background-color: #FF013C;
   border: 5px solid black;
 }
@@ -294,7 +295,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #ccc;
+  background-color: black;
   -webkit-transition: .4s;
   transition: .4s;
 }
@@ -306,7 +307,7 @@
   width: 26px;
   left: 4px;
   bottom: 4px;
-  background-color: white;
+  background-color: blueviolet;
   -webkit-transition: .4s;
   transition: .4s;
 }
@@ -319,11 +320,11 @@
 }
 
 input:checked + .slider {
-  background-color: #2196F3;
+  background-color: black;
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #2196F3;
+  box-shadow: 0 0 1px black;
 }
 
 input:checked + .slider:before {
